@@ -1,0 +1,4 @@
+omni_wheel.c:11:6:motor_move	56	static
+omni_wheel.c:126:6:HOUI_Correction	24	static
+omni_wheel.c:184:5:max	0	static
+omni_wheel.c:188:6:map_m	8	static

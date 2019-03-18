@@ -1,0 +1,5 @@
+sensor.c:15:6:line_get_data	20	static
+sensor.c:51:10:line_get_marker	36	static
+sensor.c:92:10:line_get_angle	168	static
+sensor.c:130:10:line_get_data_poorly_made	8	static
+sensor.c:305:10:line_get_deviation	24	static

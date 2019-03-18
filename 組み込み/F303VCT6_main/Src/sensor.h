@@ -1,0 +1,23 @@
+/*
+ * sensor.h
+ *
+ *  Created on: 2018/01/22
+ *      Author: okada_tech
+ */
+
+#ifndef SENSOR_H_
+#define SENSOR_H_
+
+#include "management.h"
+#include <stdbool.h>
+#include <string.h>
+
+void line_get_data();
+uint16_t line_get_marker();
+uint16_t line_get_angle();
+uint16_t line_get_deviation();
+uint16_t line_get_data_poorly_made();
+
+int angle_1,angle_2;
+
+#endif /* SENSOR_H_ */

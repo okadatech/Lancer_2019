@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="リソース名を &apos;F303VCT6_main/Src/omni_wheel.c&apos; から &apos;omni_wheel_Three-wheeled.c&apos; に変更します" description="リソース &apos;omni_wheel.c&apos; の名前変更" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Src/omni_wheel.c" name="omni_wheel_Three-wheeled.c" stamp="1552576454930" updateReferences="true"/>&#x0A;<refactoring comment="リソース名を &apos;F303VCT6_main/Src/omni_wheel.h&apos; から &apos;omni_wheelThree-wheeled.h&apos; に変更します" description="リソース &apos;omni_wheel.h&apos; の名前変更" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Src/omni_wheel.h" name="omni_wheelThree-wheeled.h" stamp="1552576463311" updateReferences="true"/>
+</session>

@@ -1,0 +1,10 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:F767_main.elf,org.eclipse.launchbar.core.descriptorType.default\:F767_Hermit_main.elf,org.eclipse.launchbar.core.descriptorType.default\:F303K_arm_controller.elf,org.eclipse.launchbar.core.descriptorType.default\:F303VCT6_main.elf
+eclipse.preferences.version=1
+org.eclipse.launchbar.core.descriptorType.default\:F303K_arm_controller.elf/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:F303K_arm_controller.elf/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:F303VCT6_main.elf/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:F303VCT6_main.elf/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:F303Vet6_main.elf/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:F303Vet6_main.elf/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local

@@ -1,0 +1,804 @@
+
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  ** This notice applies to any and all portions of this file
+  * that are not between comment pairs USER CODE BEGIN and
+  * USER CODE END. Other portions of this file, whether 
+  * inserted by the user or by software development tools
+  * are owned by their respective copyright owners.
+  *
+  * COPYRIGHT(c) 2019 STMicroelectronics
+  *
+  * Redistribution and use in source and binary forms, with or without modification,
+  * are permitted provided that the following conditions are met:
+  *   1. Redistributions of source code must retain the above copyright notice,
+  *      this list of conditions and the following disclaimer.
+  *   2. Redistributions in binary form must reproduce the above copyright notice,
+  *      this list of conditions and the following disclaimer in the documentation
+  *      and/or other materials provided with the distribution.
+  *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  *      may be used to endorse or promote products derived from this software
+  *      without specific prior written permission.
+  *
+  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  *
+  ******************************************************************************
+  */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "stm32f3xx_hal.h"
+#include "adc.h"
+#include "dma.h"
+#include "i2c.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
+
+/* USER CODE BEGIN Includes */
+#include "management.h"
+#include <stdio.h>
+/* USER CODE END Includes */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+
+/* USER CODE BEGIN PFP */
+/* Private function prototypes -----------------------------------------------*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+void Calibration();
+void state_print();
+void test();
+void main_run();
+void test2();
+/* USER CODE END PFP */
+
+/* USER CODE BEGIN 0 */
+uint8_t mode;
+
+
+ /* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  *
+  * @retval None
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration----------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
+  MX_ADC3_Init();
+  MX_USART1_UART_Init();
+  MX_ADC4_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_TIM6_Init();
+  MX_I2C1_Init();
+  MX_UART4_Init();
+  MX_TIM8_Init();
+  MX_TIM4_Init();
+  MX_TIM3_Init();
+  MX_TIM17_Init();
+  MX_TIM15_Init();
+  MX_TIM16_Init();
+  /* USER CODE BEGIN 2 */
+  xprintf_init(&huart1);
+  JY901_init(&hi2c1);
+  oled_i2c_to_oled(&hi2c1);
+  DFPlayer_init(&huart4);
+  oled_returnhome();
+  oled_puts("Is The Order a");
+  oled_setcursor(1,2);
+  oled_puts("Lancer Robot?");
+  HAL_Delay(500);
+  DFPlayer_setvolume(0x10);
+  HAL_Delay(500);
+  DFPlayer_playmp3(1);
+  HOUI_def=JY901_def_set();
+
+  if(HAL_TIM_Encoder_Init(&htim3, &sConfig) != HAL_OK){Error_Handler();}
+  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+  TIM3->CNT=30000;
+
+
+  if(HAL_TIM_Encoder_Init(&htim4, &sConfig) != HAL_OK){Error_Handler();}
+  HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
+  TIM4->CNT=30000;
+
+  if(HAL_TIM_Encoder_Init(&htim8, &sConfig) != HAL_OK){Error_Handler();}
+  HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);
+  TIM8->CNT=30000;
+
+
+  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCdata1,9) != HAL_OK){Error_Handler();}
+
+  if (HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCdata2,sizeof(ADCdata2)) != HAL_OK){Error_Handler();}
+
+  if (HAL_ADC_Start_DMA(&hadc3, (uint32_t *)ADCdata3,sizeof(ADCdata3)) != HAL_OK){Error_Handler();}
+
+  if (HAL_ADC_Start_DMA(&hadc4, (uint32_t *)ADCdata4,sizeof(ADCdata4)) != HAL_OK){Error_Handler();}
+
+  if (HAL_UART_Receive_DMA(&huart2, (uint8_t *)Rxbuf,sizeof(Rxbuf)) != HAL_OK){Error_Handler();}
+
+  HOUI_def=JY901_def_set();
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+
+  /* USER CODE END WHILE */
+
+  /* USER CODE BEGIN 3 */
+	  mofu:
+	  	  	 mode=//HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_6)*4+
+	  	  			 HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13)*2 +HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_14);
+	  	  	  switch(mode){
+	  	  	  case 0:
+	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
+	  	  			  HOUI_def=JY901_def_set();
+	  	  			  while(HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9)){
+							servo(90,100,90,90);
+							ics_set_pos1(0,map_a(90,0,180,4833,10166));
+							ics_set_pos1(1,map_a(90,0,180,4833,10166));
+							motor_move(0,0,0);
+							xprintf("digree=%d\r\n",line_get_data_poorly_made());
+							oled_returnhome();
+							oled_puts("main_run waiting ");
+							oled_setcursor(1,0);
+							oled_puts("     for start   ");
+							if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==0){goto mofu;}
+							HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+	  	  			  	}
+	  	  			    DFPlayer_playmp3(6);
+	  	  			  	oled_clear();
+	  	  			    oled_returnhome();
+	  	  			    oled_puts("main_run select ");
+	  	  			    oled_setcursor(1,0);
+	  	  			    oled_puts("running");
+	  	  			    HOUI_def=JY901_def_set();
+					    TIM3->CNT=3000;
+					    TIM4->CNT=3000;
+					    TIM8->CNT=3000;
+					    marker_count_data=0;
+					    marker_count_data_=0;
+					    while(HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9)==0){
+	  	  			  		main_run();
+	  	  			  	}
+	  	  				servo(90,100,90,90);
+		  	  			ics_set_pos1(0,map_a(90,0,180,4833,10166));
+		  	  			ics_set_pos1(1,map_a(90,0,180,4833,10166));
+	  	  				motor_move(0,0,0);
+	  	  		  }
+	  	  		  else{
+	  	  			  servo(90,100,90,90);
+	  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+	  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
+	  	 	  	  	  motor_move(0,0,0);
+	  	  			  oled_returnhome();
+	  	  			  oled_puts("main_run select");
+	  	  			  oled_setcursor(1,0);
+	  	  			  oled_puts("OK?     waiting ");
+	  	  			  HAL_Delay(5);
+	  	  		  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+	  	  		  }
+	  	  	  break;
+
+	  	  	  case 1:
+	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
+  	  			  test();
+  	  			  servo(90,100,90,90);
+  	  			  //ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  //ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("testmode1 select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("running         ");
+  	  		  }
+  	  		  else{
+  	  			  servo(90,100,90,90);
+  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("testmode1 select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("OK?     waiting ");
+  	  			  HAL_Delay(5);
+  	  		  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+  	  		  }
+
+	  	  	  break;
+
+	  	  	  case 2:
+	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
+  	  			  test2();
+  	  			  servo(90,100,90,90);
+  	  			  //ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  //ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("testmode2 select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("running         ");
+  	  		  }
+  	  		  else{
+  	  			  servo(90,100,90,90);
+  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("testmode2 select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("OK?     waiting ");
+  	  			  HAL_Delay(5);
+  	  		  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+  	  		  }
+
+	  	  	  break;
+
+	  	  	  case 3:
+	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
+  	  			  state_print();
+  	  			  servo(90,100,90,90);
+  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("State     select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("running         ");
+  	  		  }
+  	  		  else{
+  	  			  servo(90,100,90,90);
+  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
+  	 	  	  	  motor_move(0,0,0);
+  	  			  oled_returnhome();
+  	  			  oled_puts("State     select");
+  	  			  oled_setcursor(1,0);
+  	  			  oled_puts("OK?     waiting ");
+  	  			  HAL_Delay(5);
+  	  		  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+  	  		  }
+
+	  	  	  break;
+
+	  	  	  default:
+	  	  	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+	  	  		  servo(90,100,90,90);
+	  	  	  	  motor_move(0,0,0);
+	  	  	  	  oled_returnhome();
+	  	  	  	  oled_puts("select mode     ");
+	  	  	  	  oled_setcursor(1,0);
+	  	  	  	  oled_puts("           SURF ");
+	  	  	  	  HAL_Delay(5);
+	  	  	  break;
+	  	  	  }
+  }
+  /* USER CODE END 3 */
+
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_PeriphCLKInitTypeDef PeriphClkInit;
+
+    /**Initializes the CPU, AHB and APB busses clocks 
+    */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = 16;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Initializes the CPU, AHB and APB busses clocks 
+    */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_USART2
+                              |RCC_PERIPHCLK_USART3|RCC_PERIPHCLK_UART4
+                              |RCC_PERIPHCLK_I2C1|RCC_PERIPHCLK_TIM1
+                              |RCC_PERIPHCLK_TIM8;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
+  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInit.Uart4ClockSelection = RCC_UART4CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
+  PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
+  PeriphClkInit.Tim8ClockSelection = RCC_TIM8CLK_HCLK;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure the Systick interrupt time 
+    */
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+
+    /**Configure the Systick 
+    */
+  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+
+  /* SysTick_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/* USER CODE BEGIN 4 */
+
+
+void main_run(){
+		float calc=0;
+		uint16_t digree_now;
+		uint8_t cntline_time;
+		digree_now=line_get_data_poorly_made();
+		if(line_get_marker()==10){
+			marker_count_data++;
+		}
+		if(marker_count_data>=10){
+			marker_count_data=0;
+		}
+		if(marker_count_data_ != marker_count_data){
+			marker_count_data_=marker_count_data;
+ 			 TIM3->CNT=30000;
+		}
+
+	  if(digree_now<360){
+		  if(marker_count_data==1 ){//垂直標的
+			  if((TIM3->CNT)>29700 && (TIM3->CNT)<29830){
+	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+	  			  DFPlayer_playmp3(3);
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+		  if(marker_count_data==2){//垂直標的
+			  if((TIM3->CNT)>29700 && (TIM3->CNT)<29830){
+	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+		  if(marker_count_data==3){//横移動
+			  while((TIM3->CNT)>29900){//少し前出る
+				  digree_now=line_get_data_poorly_made();
+				  if(digree_now<180){
+					 calc=digree_now*(sqrt(digree_now*2))/16;
+					 HOUI_Correction(0);
+					 motor_move(125,(uint16_t)calc,800);
+				 }
+				 else{
+					 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 HOUI_Correction(0);
+					 motor_move(125,(uint16_t)(360.0-calc),800);
+				 }
+			  }
+			  	  	 motor_move(0,0,0);
+					 TIM4->CNT=30000;
+					 while(TIM4->CNT>29400){//真ん中まで移動
+						 HOUI_Correction(0);
+						 motor_move(125,270,500);
+						 }
+					 //射撃
+		  			 DFPlayer_playmp3(2);
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 HAL_Delay(100);
+					 cntline_time=0;
+				 while(cntline_time<2){//対岸まで移動
+					 if(line_get_data_poorly_made()!=1000 && line_get_data_poorly_made()>300){
+						 cntline_time++;
+					 }
+					 HOUI_Correction(0);
+					 motor_move(125,270,500);
+					 HAL_Delay(50);
+				 }
+				 motor1(1000,1000);
+				 motor1(1000,1000);
+				 motor1(1000,1000);
+				 HAL_Delay(100);
+				 HOUI_Correction(180);//回転
+				 while(marker_count_data==3){//マーカーまで移動
+					 digree_now=line_get_data_poorly_made();
+					 		if(line_get_marker()==10){
+					 			marker_count_data++;
+					 		}
+					 		if(marker_count_data_ != marker_count_data){
+					 			marker_count_data_=marker_count_data;
+					  			 TIM3->CNT=30000;
+					 		}
+					 		if(digree_now<180){
+					 			if(digree_now==90){calc=90;}
+					 			calc=digree_now*(sqrt(digree_now*2))/16;
+					 			HOUI_Correction(180);
+					 			motor_move(125,(uint16_t)calc,800);
+					 		}
+					 		else{
+					 			if(digree_now==270){calc=270;}
+					 			calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 			HOUI_Correction(180);
+					 			motor_move(125,(uint16_t)(360.0-calc),800);
+					 		}
+
+				 }
+		  }
+
+		  if(marker_count_data==5){//右水平標的
+			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
+	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+		  			  DFPlayer_playmp3(5);
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+		  if(marker_count_data==6){//左水平標的
+			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
+	  			   ics_set_pos1(0,map_a(60,0,180,4833,10166));
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+		  if(marker_count_data==7){//右水平標的
+			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
+	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+		  			  DFPlayer_playmp3(4);
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+
+		  if(marker_count_data==8){//左水平標的
+			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
+	  			   ics_set_pos1(0,map_a(60,0,180,4833,10166));
+			  }
+			  else{
+				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+			  }
+		  }
+
+		  if(marker_count_data==9){//横移動
+
+			  while((TIM3->CNT)>29900){//少し前に出る
+				  digree_now=line_get_data_poorly_made();
+				  if(digree_now<180){
+					 calc=digree_now*(sqrt(digree_now*2))/16;
+					 HOUI_Correction(180);
+					 motor_move(125,(uint16_t)calc,800);
+				 }
+				 else{
+					 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 HOUI_Correction(180);
+					 motor_move(125,(uint16_t)(360.0-calc),800);
+				 }
+			  }
+			  	  	 motor_move(0,0,0);
+					 TIM4->CNT=30000;
+					 while(TIM4->CNT>29400){//真ん中まで移動
+						 HOUI_Correction(180);
+						 motor_move(125,270,500);
+						 }
+					 //射撃
+
+		  			 DFPlayer_playmp3(2);
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 HAL_Delay(100);
+				 while(line_get_data_poorly_made()==1000 && line_get_data_poorly_made()>300){//対岸まで移動
+					 HOUI_Correction(180);
+					 motor_move(125,270,500);
+				 }
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 motor1(1000,1000);
+					 HAL_Delay(100);
+				 HOUI_Correction(0);
+				 while(marker_count_data==9){//マーカーまで移動
+					 digree_now=line_get_data_poorly_made();
+					 		if(line_get_marker()==10){
+					 			marker_count_data++;
+					 		}
+					 		if(marker_count_data_ != marker_count_data){
+					 			marker_count_data_=marker_count_data;
+					  			 TIM3->CNT=30000;
+					 		}
+					 		if(digree_now<180){
+					 			calc=digree_now*(sqrt(digree_now*2))/16;
+					 			if(digree_now==90){calc=90;}
+					 			HOUI_Correction(0);
+					 			motor_move(125,(uint16_t)calc,800);
+					 		}
+					 		else{
+					 			calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 			if(digree_now==270){calc=270;}
+					 			HOUI_Correction(0);
+					 			motor_move(125,(uint16_t)(360.0-calc),800);
+					 		}
+
+				 }
+		  }
+
+
+			  if(marker_count_data<3 ||marker_count_data==10){//0°方向直進移動
+			  	  if(digree_now<180){
+				  calc=digree_now*(sqrt(digree_now*2))/16;
+				  HOUI_Correction(0);
+				  motor_move(125,(uint16_t)calc,900);
+			  	  }
+			  	  else{
+					  calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					  HOUI_Correction(0);
+					  motor_move(125,(uint16_t)(360.0-calc),900);
+			  	  }
+			  }
+			  else{
+				  if(digree_now<180){//180°方向直進移動
+				  calc=digree_now*(sqrt(digree_now*2))/16;
+				  HOUI_Correction(180);
+				  motor_move(125,(uint16_t)calc,900);
+			  	  }
+			  	  else{
+					  calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					  HOUI_Correction(180);
+					  motor_move(125,(uint16_t)(360.0-calc),900);
+			  	  }
+			  }
+
+				  xprintf(" m1=%d", TIM3->CNT);
+				  xprintf(" m2=%d", TIM4->CNT);
+				  xprintf(" m3=%d", TIM8->CNT);
+				  xprintf(" count=%d",marker_count_data);
+				  xprintf(" digree=%d\r\n",digree_now);
+
+	  }
+	  else{motor_move(0,0,0);}
+	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+
+}
+void test2(){
+	  xprintf(" m1=%d", TIM3->CNT);
+	  xprintf(" m2=%d", TIM4->CNT);
+	  xprintf(" m3=%d", TIM8->CNT);
+	ics_set_pos1(0,map_a(120,0,180,4833,10166));
+	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+}
+
+
+void test(){
+	ics_set_pos1(1,map_a(130,0,180,4833,10166));
+	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+}
+
+
+
+void state_print(){
+	  xprintf(" SW1=%d",HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_14));
+	  xprintf(" SW2=%d",HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13));
+	  xprintf(" SW3=%d",HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_6));
+	  xprintf(" SW_C=%d",HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15));
+	  xprintf(" SW_S=%d",ADCdata1[1]);
+	  xprintf(" m1=%d", TIM3->CNT);
+	  xprintf(" m2=%d", TIM4->CNT);
+	  xprintf(" m3=%d", TIM8->CNT);
+	  xprintf(" 1=%d",Linedata[0]);
+	  xprintf(" 2=%d",Linedata[1]);
+	  xprintf(" 3=%d",Linedata[2]);
+	  xprintf(" 4=%d",Linedata[3]);
+	  xprintf(" 5=%d",Linedata[4]);
+	  xprintf(" 6=%d",Linedata[5]);
+	  xprintf(" 7=%d",Linedata[6]);
+	  xprintf(" 8=%d",Linedata[7]);
+	  xprintf(" 9=%d",Linedata[8]);
+	  xprintf(" 10=%d",Linedata[9]);
+	  xprintf(" 11=%d",Linedata[10]);
+	  xprintf(" 12=%d",Linedata[11]);
+	  xprintf(" 13=%d",Linedata[12]);
+	  xprintf(" 14=%d",Linedata[13]);
+	  xprintf(" 15=%d",Linedata[14]);
+	  xprintf(" 16=%d",Linedata[15]);
+	  xprintf(" 17=%d",Linedata[16]);
+	  xprintf(" 18=%d",Linedata[17]);
+	  xprintf(" 19=%d",Linedata[18]);
+	  xprintf(" 20=%d",Linedata[19]);
+	  xprintf(" 21=%d",Linedata[20]);
+	  xprintf(" 22=%d",Linedata[21]);
+	  xprintf(" 23=%d",Linedata[22]);
+	  xprintf(" 24=%d",Linedata[23]);
+	  xprintf(" R1=%d",Linedata_R[0]);
+	  xprintf(" R2=%d",Linedata_R[1]);
+	  xprintf(" R3=%d",Linedata_R[0]);
+	  xprintf(" L1=%d",Linedata_L[0]);
+	  xprintf(" L2=%d",Linedata_L[1]);
+	  xprintf(" L3=%d",Linedata_L[2]);
+	  xprintf(" Dig=%d",JY901_yaw_get(HOUI_def));
+	  xprintf(" theta=%d",line_get_data_poorly_made());
+	  xprintf(" marker=%d", line_get_marker());
+	  xprintf("\r\n");
+	  HAL_Delay(50);
+	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
+}
+
+
+void Calibration(){
+	while(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
+	motor_move(0,0,0);
+	oled_returnhome();
+	oled_puts("Calib select    ");
+	oled_setcursor(1,0);
+	oled_puts("turn on startSW ");
+	HAL_Delay(5);
+    if(HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9)==0){	//press RS
+    DFPlayer_playmp3(8);
+	oled_clear();
+	oled_returnhome();
+	oled_puts("Angular velocity");
+	oled_setcursor(1,0);
+	oled_puts("    Calibration ");
+	JY901_calibration(2000,1);
+	oled_clear();
+	oled_returnhome();
+	oled_puts("Magnetic");
+	oled_setcursor(1,0);
+	oled_puts(" Calibration  RS");
+	xprintf("houi cab\r\n");
+	motor_move(200,0,200);
+	JY901_calibration(12000,2);
+	motor_move(0,0,0);
+	oled_clear();
+	oled_returnhome();
+	oled_puts("Calibration End ");
+	xprintf("cab end\r\n");
+	JY901_calibration(100,3);
+	xprintf("save\r\n");
+	JY901_calibration(100,4);
+	DFPlayer_stopmp3();
+}
+}
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	int j = 0;
+	while (Rxbuf[j] != 251 && j<(sizeof(Rxbuf))) {
+		j++;
+	}
+	if(j>=sizeof(Rxbuf)){
+		for(int k=0; k<sizeof(Rxbuf)-1; k++){
+			data[k]=0;
+		}
+	}
+	else {
+		for (int k = 0; k < (sizeof(Rxbuf)); k++) {
+			if ((j + k) >= sizeof(Rxbuf)) {
+				data[k] = Rxbuf[k - (sizeof(Rxbuf) - j)];
+			}
+			else {
+				data[k] = Rxbuf[j + k + 1];
+			}
+		}
+
+		Flug_Rxdata=1;
+	}
+}
+
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @param  file: The file name as string.
+  * @param  line: The line in file as a number.
+  * @retval None
+  */
+void _Error_Handler(char *file, int line)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  while(1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
+}
+
+#ifdef  USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t* file, uint32_t line)
+{ 
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

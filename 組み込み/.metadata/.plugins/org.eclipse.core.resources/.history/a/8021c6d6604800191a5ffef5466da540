@@ -1,0 +1,396 @@
+/*
+ * sensor.c
+ *
+ *  Created on: 2018/01/22
+ *      Author: okada_tech
+ */
+
+
+#include "sensor.h"
+
+
+const int Brightness_const=2900;
+
+void line_get_data(){/*
+	 	 	 	Linedata_R[0]= ADCdata4[2];
+			    Linedata_R[1]= ADCdata4[3];
+			    Linedata_R[2]= ADCdata4[4];
+
+			    Linedata_L[0]= ADCdata4[1];
+			    Linedata_L[1]= ADCdata4[0];
+			    Linedata_L[2]= ADCdata3[10];
+
+				Linedata[0]=ADCdata1[0];
+				Linedata[1]=ADCdata1[1];
+				Linedata[2]=ADCdata1[2];
+				Linedata[3]=ADCdata1[3];
+				Linedata[4]=ADCdata1[4];
+				Linedata[5]=ADCdata1[5];
+				Linedata[6]=ADCdata1[6];
+				Linedata[7]=ADCdata1[7];
+				Linedata[8]=ADCdata1[8];
+				Linedata[9]=ADCdata2[0];
+				Linedata[10]=ADCdata2[1];
+				Linedata[11]=ADCdata2[2];
+				Linedata[12]=ADCdata2[3];
+				Linedata[13]=ADCdata2[4];
+				Linedata[14]=ADCdata3[0];
+				Linedata[15]=ADCdata3[1];
+				Linedata[16]=ADCdata3[2];
+				Linedata[17]=ADCdata3[3];
+				Linedata[18]=ADCdata3[4];
+				Linedata[19]=ADCdata3[5];
+				Linedata[20]=ADCdata3[6];
+				Linedata[21]=ADCdata3[7];
+				Linedata[22]=ADCdata3[8];
+				Linedata[23]=ADCdata3[9];
+*/
+
+		if(cnt>10){cnt=0;}
+		else{cnt++;}
+		Linedata_R_temp0[cnt]= ADCdata4[2];
+		Linedata_R_temp1[cnt]= ADCdata4[3];
+		Linedata_R_temp2[cnt]= ADCdata4[4];
+
+		Linedata_L_temp0[cnt]= ADCdata4[1];
+		Linedata_L_temp1[cnt]= ADCdata4[0];
+		Linedata_L_temp2[cnt]= ADCdata3[10];
+
+		Linedata_temp0[cnt]=ADCdata1[0];
+		Linedata_temp1[cnt]=ADCdata1[1];
+		Linedata_temp2[cnt]=ADCdata1[2];
+		Linedata_temp3[cnt]=ADCdata1[3];
+		Linedata_temp4[cnt]=ADCdata1[4];
+		Linedata_temp5[cnt]=ADCdata1[5];
+		Linedata_temp6[cnt]=ADCdata1[6];
+		Linedata_temp7[cnt]=ADCdata1[7];
+		Linedata_temp8[cnt]=ADCdata1[8];
+		Linedata_temp9[cnt]=ADCdata2[0];
+		Linedata_temp10[cnt]=ADCdata2[1];
+		Linedata_temp11[cnt]=ADCdata2[2];
+		Linedata_temp12[cnt]=ADCdata2[3];
+		Linedata_temp13[cnt]=ADCdata2[4];
+		Linedata_temp14[cnt]=ADCdata3[0];
+		Linedata_temp15[cnt]=ADCdata3[1];
+		Linedata_temp16[cnt]=ADCdata3[2];
+		Linedata_temp17[cnt]=ADCdata3[3];
+		Linedata_temp18[cnt]=ADCdata3[4];
+		Linedata_temp19[cnt]=ADCdata3[5];
+		Linedata_temp20[cnt]=ADCdata3[6];
+		Linedata_temp21[cnt]=ADCdata3[7];
+		Linedata_temp22[cnt]=ADCdata3[8];
+		Linedata_temp23[cnt]=ADCdata3[9];
+
+			Linedata_R[0]=Linedata_R[0]+Linedata_R_temp0[cnt];
+			Linedata_R[1]=Linedata_R[1]+Linedata_R_temp1[cnt];
+			Linedata_R[2]=Linedata_R[2]+Linedata_R_temp2[cnt];
+			Linedata_L[0]=Linedata_L[0]+Linedata_L_temp0[cnt];
+			Linedata_L[1]=Linedata_L[1]+Linedata_L_temp1[cnt];
+			Linedata_L[2]=Linedata_L[2]+Linedata_L_temp2[cnt];
+			Linedata[0]=Linedata[0]+Linedata_temp0[cnt];
+			Linedata[1]=Linedata[1]+Linedata_temp1[cnt];
+			Linedata[2]=Linedata[2]+Linedata_temp2[cnt];
+			Linedata[3]=Linedata[3]+Linedata_temp3[cnt];
+			Linedata[4]=Linedata[4]+Linedata_temp4[cnt];
+			Linedata[5]=Linedata[5]+Linedata_temp5[cnt];
+			Linedata[6]=Linedata[6]+Linedata_temp6[cnt];
+			Linedata[7]=Linedata[7]+Linedata_temp7[cnt];
+			Linedata[8]=Linedata[8]+Linedata_temp8[cnt];
+			Linedata[9]=Linedata[9]+Linedata_temp9[cnt];
+			Linedata[10]=Linedata[10]+Linedata_temp10[cnt];
+			Linedata[11]=Linedata[11]+Linedata_temp11[cnt];
+			Linedata[12]=Linedata[12]+Linedata_temp12[cnt];
+			Linedata[13]=Linedata[13]+Linedata_temp13[cnt];
+			Linedata[14]=Linedata[14]+Linedata_temp14[cnt];
+			Linedata[15]=Linedata[15]+Linedata_temp15[cnt];
+			Linedata[16]=Linedata[16]+Linedata_temp16[cnt];
+			Linedata[17]=Linedata[17]+Linedata_temp17[cnt];
+			Linedata[18]=Linedata[18]+Linedata_temp18[cnt];
+			Linedata[19]=Linedata[19]+Linedata_temp19[cnt];
+			Linedata[20]=Linedata[20]+Linedata_temp20[cnt];
+			Linedata[21]=Linedata[21]+Linedata_temp21[cnt];
+			Linedata[22]=Linedata[22]+Linedata_temp22[cnt];
+			Linedata[23]=Linedata[23]+Linedata_temp23[cnt];
+
+				Linedata_R[0]=Linedata_R[0]/10;
+				Linedata_R[1]=Linedata_R[1]/10;
+				Linedata_R[2]=Linedata_R[2]/10;
+				Linedata_L[0]=Linedata_L[0]/10;
+				Linedata_L[1]=Linedata_L[1]/10;
+				Linedata_L[2]=Linedata_L[2]/10;
+
+
+				Linedata[0]=Linedata[0]/10;
+				Linedata[1]=Linedata[1]/10;
+				Linedata[2]=Linedata[2]/10;
+				Linedata[3]=Linedata[3]/10;
+				Linedata[4]=Linedata[4]/10;
+				Linedata[5]=Linedata[5]/10;
+				Linedata[6]=Linedata[6]/10;
+				Linedata[7]=Linedata[7]/10;
+				Linedata[8]=Linedata[8]/10;
+				Linedata[9]=Linedata[9]/10;
+				Linedata[10]=Linedata[10]/10;
+				Linedata[11]=Linedata[11]/10;
+				Linedata[12]=Linedata[12]/10;
+				Linedata[13]=Linedata[13]/10;
+				Linedata[14]=Linedata[14]/10;
+				Linedata[15]=Linedata[15]/10;
+				Linedata[16]=Linedata[16]/10;
+				Linedata[17]=Linedata[17]/10;
+				Linedata[18]=Linedata[18]/10;
+				Linedata[19]=Linedata[19]/10;
+				Linedata[20]=Linedata[20]/10;
+				Linedata[21]=Linedata[21]/10;
+				Linedata[22]=Linedata[22]/10;
+				Linedata[23]=Linedata[23]/10;
+
+
+
+}
+
+
+uint16_t line_get_marker(){
+	uint8_t data=0;
+	line_get_data();
+	if(Linedata_R[0]>Brightness_const ||Linedata_R[1]>Brightness_const||Linedata_R[2]>Brightness_const||
+			Linedata_L[0]>Brightness_const||Linedata_L[1]>Brightness_const||Linedata_L[2]>Brightness_const){
+		data=1;
+		if(Line_data_temp==2){
+
+		}
+		else if(Line_data_temp==0){
+			Line_data_temp=2;
+			data=10;
+		}
+		else{
+		Line_data_temp=1;
+		}
+	}
+	else{
+		Line_data_temp=0;
+	}
+	return data;
+}
+
+uint16_t line_get_angle(){
+	int angle_data=0;
+	int cnt;
+	int place_1[12],place_2[12];
+
+	angle_1=0;
+	angle_2=0;
+
+	line_get_data();
+
+	cnt=0;
+	for(int i=0;i<12;i++){
+	if(Linedata[i]<Brightness_const){
+			place_1[cnt]=i;
+			cnt++;
+		}
+	}
+	for(int i=0;i<cnt;i++){
+		angle_1=15*place_1[i];
+	}
+	angle_1=angle_1/cnt;
+
+	cnt=0;
+	for(int i=12;i<25;i++){
+	if(Linedata[i-12]<Brightness_const){
+			place_2[cnt]=i-12;
+			cnt++;
+		}
+	}
+	for(int i=0;i<cnt;i++){
+		angle_2=15*place_2[i];
+	}
+	angle_2=angle_2/cnt;
+	angle_data=myAtan2(sin(angle_1)+sin(angle_2),cos(angle_1)+cos(angle_2));
+
+	return angle_data;
+}
+
+uint16_t line_get_data_poorly_made(){
+	line_get_data();
+	if(Linedata[0]>Brightness_const && Linedata[1]<Brightness_const && Linedata[23]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,1);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 0;
+	}
+
+	else if(Linedata[0]>Brightness_const && Linedata[1]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 7;
+	}
+	else if(Linedata[0]>Brightness_const && Linedata[23]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 353;
+	}
+
+	else if(Linedata[1]>Brightness_const && Linedata[2]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 15;
+	}
+	else if(Linedata[23]>Brightness_const && Linedata[22]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 345;
+	}
+
+	else if(Linedata[1]>Brightness_const && Linedata[2]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 22;
+	}
+	else if(Linedata[23]>Brightness_const && Linedata[22]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 338;
+	}
+
+	else if(Linedata[2]>Brightness_const && Linedata[3]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 30;
+	}
+	else if(Linedata[22]>Brightness_const && Linedata[21]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 330;
+	}
+
+	else if(Linedata[2]>Brightness_const && Linedata[3]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 37;
+	}
+	else if(Linedata[22]>Brightness_const && Linedata[21]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 353;
+	}
+
+
+	else if(Linedata[3]>Brightness_const && Linedata[4]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 45;
+	}
+	else if(Linedata[21]>Brightness_const && Linedata[20]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 315;
+	}
+
+	else if(Linedata[3]>Brightness_const && Linedata[4]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 52;
+	}
+	else if(Linedata[21]>Brightness_const && Linedata[20]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 308;
+	}
+
+
+	else if(Linedata[4]>Brightness_const && Linedata[5]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 60;
+	}
+	else if(Linedata[20]>Brightness_const && Linedata[19]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 300;
+	}
+
+	else if(Linedata[4]>Brightness_const && Linedata[5]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 67;
+	}
+	else if(Linedata[20]>Brightness_const && Linedata[19]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 293;
+	}
+
+	else if(Linedata[5]>Brightness_const && Linedata[6]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 75;
+	}
+	else if(Linedata[19]>Brightness_const && Linedata[18]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 285;
+	}
+
+
+	else if(Linedata[6]>Brightness_const && Linedata[7]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 82;
+	}
+	else if(Linedata[19]>Brightness_const && Linedata[18]>Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 278;
+	}
+
+
+	else if(Linedata[8]>Brightness_const && Linedata[7]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,1);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,0);
+		return 90;
+	}
+	else if(Linedata[18]>Brightness_const && Linedata[19]<Brightness_const){
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1,0);
+		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0,0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,1);
+		return 270;
+	}
+
+
+	else{return 10000;}
+}
+
+
+
+uint16_t line_get_deviation(){
+	int deviation_data=0;
+	line_get_data();
+
+	deviation_data=45*sin(-line_get_angle()-angle_2);
+
+	return deviation_data;
+}

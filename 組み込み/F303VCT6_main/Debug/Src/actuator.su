@@ -1,0 +1,9 @@
+actuator.c:17:6:servo	24	static
+actuator.c:58:5:Synchronize1	24	static
+actuator.c:74:5:ics_set_pos1	24	static
+actuator.c:97:5:ics_set_st1	24	static
+actuator.c:118:5:ics_set_sp1	24	static
+actuator.c:140:6:motor1	16	static
+actuator.c:161:6:motor2	16	static
+actuator.c:183:6:motor3	16	static
+actuator.c:207:6:map_a	4	static
