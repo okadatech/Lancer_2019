@@ -11,7 +11,7 @@
 
 const int Brightness_const=2500;
 
-const int Brightness_const_marker=2650;
+const int Brightness_const_marker=2500;
 void line_get_data(){
 	 	 	 	Linedata_R[0]= ADCdata4[2];
 			    Linedata_R[1]= ADCdata4[3];

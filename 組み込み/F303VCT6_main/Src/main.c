@@ -188,8 +188,8 @@ int main(void)
 	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
 	  	  			  HOUI_def=JY901_def_set();
 	  	  			  while(HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9)){
-							servo(90,100,90,90);
-							ics_set_pos1(0,map_a(90,0,180,4833,10166));
+	  	  				  	  servo(90,100,95,90);
+							ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 							ics_set_pos1(1,map_a(90,0,180,4833,10166));
 							motor_move(0,0,0);
 							xprintf("digree=%d\r\n",line_get_data_poorly_made());
@@ -200,7 +200,7 @@ int main(void)
 							if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==0){goto mofu;}
 							HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
 	  	  			  	}
-	  	  			  	  DFPlayer_setvolume(0x22);
+	  	  			  	  DFPlayer_setvolume(0x20);
 	  	  			  	oled_clear();
 	  	  			    oled_returnhome();
 	  	  			    oled_puts("main_run select ");
@@ -215,14 +215,14 @@ int main(void)
 					    while(HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9)==0){
 	  	  			  		main_run();
 	  	  			  	}
-	  	  				servo(90,100,90,90);
-		  	  			ics_set_pos1(0,map_a(90,0,180,4833,10166));
+					    servo(90,100,95,90);
+		  	  			ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 		  	  			ics_set_pos1(1,map_a(90,0,180,4833,10166));
 	  	  				motor_move(0,0,0);
 	  	  		  }
 	  	  		  else{
-	  	  			  servo(90,100,90,90);
-	  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+	  	  			  servo(90,100,95,90);
+	  	  			  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 	  	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
 	  	 	  	  	  motor_move(0,0,0);
 	  	  			  oled_returnhome();
@@ -237,7 +237,7 @@ int main(void)
 	  	  	  case 1:
 	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
   	  			  test();
-  	  			  servo(90,100,90,90);
+  	  			  servo(90,100,95,90);
   	  			  //ics_set_pos1(0,map_a(90,0,180,4833,10166));
   	  			  //ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
@@ -247,8 +247,8 @@ int main(void)
   	  			  oled_puts("running         ");
   	  		  }
   	  		  else{
-  	  			  servo(90,100,90,90);
-  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			servo(90,100,95,90);
+  	  			  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
   	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
   	  			  oled_returnhome();
@@ -270,7 +270,7 @@ int main(void)
 	  	  	  case 2:
 	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
   	  			  test2();
-  	  			  servo(90,100,90,90);
+  	  			servo(90,100,95,90);
   	  			  //ics_set_pos1(0,map_a(90,0,180,4833,10166));
   	  			  //ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
@@ -280,8 +280,8 @@ int main(void)
   	  			  oled_puts("running         ");
   	  		  }
   	  		  else{
-  	  			  servo(90,100,90,90);
-  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			servo(90,100,95,90);
+  	  			  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
   	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
   	  			  oled_returnhome();
@@ -297,8 +297,8 @@ int main(void)
 	  	  	  case 3:
 	  	  		  if(HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_15)==1){
   	  			  state_print();
-  	  			  servo(90,100,90,90);
-  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			servo(90,100,95,90);
+  	  			  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
   	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
   	  			  oled_returnhome();
@@ -307,8 +307,8 @@ int main(void)
   	  			  oled_puts("running         ");
   	  		  }
   	  		  else{
-  	  			  servo(90,100,90,90);
-  	  			  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+  	  			servo(90,100,95,90);
+  	  			  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
   	  			  ics_set_pos1(1,map_a(90,0,180,4833,10166));
   	 	  	  	  motor_move(0,0,0);
   	  			  oled_returnhome();
@@ -323,7 +323,7 @@ int main(void)
 
 	  	  	  default:
 	  	  	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
-	  	  		  servo(90,100,90,90);
+	  	  	servo(90,100,95,90);
 	  	  	  	  motor_move(0,0,0);
 	  	  	  	  oled_returnhome();
 	  	  	  	  oled_puts("select mode     ");
@@ -411,6 +411,9 @@ void SystemClock_Config(void)
 void main_run(){
 		float calc=0;
 		uint16_t digree_now;
+		int HOUI_NOW=0;
+		int snens_data;
+		int mofu=1;
 		digree_now=line_get_data_poorly_made();
 		if(line_get_marker()==10){
 			marker_count_data++;
@@ -427,19 +430,27 @@ void main_run(){
 	  if(digree_now<360){
 		  if(marker_count_data==1 ){//垂直標的
 			  if((TIM3->CNT)>29700 && (TIM3->CNT)<29830){
-	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+				  HOUI_NOW=JY901_yaw_get(HOUI_def);
+				  if(HOUI_NOW>180){
+					  HOUI_NOW=HOUI_NOW-360;
+				  }
+	  			   ics_set_pos1(0,map_a((120-3)-HOUI_NOW,0,180,4833,10166));
 	  			  DFPlayer_playmp3(3);
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 		  if(marker_count_data==2){//垂直標的
-			  if((TIM3->CNT)>29700 && (TIM3->CNT)<29830){
-	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+			  if((TIM3->CNT)>29600 && (TIM3->CNT)<29770){
+				  HOUI_NOW=JY901_yaw_get(HOUI_def);
+				  if(HOUI_NOW>180){
+					  HOUI_NOW=HOUI_NOW-360;
+				  }
+	  			   ics_set_pos1(0,map_a((128-3)-HOUI_NOW,0,180,4833,10166));
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 		  if(marker_count_data==3){//横移動
@@ -447,12 +458,12 @@ void main_run(){
 			  while((TIM3->CNT)>29900){//少し前出る
 				  digree_now=line_get_data_poorly_made();
 				  if(digree_now<180){
-					 calc=digree_now*(sqrt(digree_now*2))/16;
+					 calc=digree_now*(sqrt(digree_now*2.3))/16;
 					 HOUI_Correction(0);
 					 motor_move(125,(uint16_t)calc,800);
 				 }
 				 else{
-					 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 					 HOUI_Correction(0);
 					 motor_move(125,(uint16_t)(360.0-calc),800);
 				 }
@@ -474,7 +485,7 @@ void main_run(){
 
 				  		  servo(90,30,30,90);
 				  		  HAL_Delay(100);
-				  		  servo(90,100,90,90);
+				  		servo(90,100,95,90);
 						  xprintf(" Rx[0]=%d", Rxbuf[0]);
 						  xprintf(" Rx[1]=%d", Rxbuf[1]);
 						  xprintf(" Rx[2]=%d", Rxbuf[2]);
@@ -562,11 +573,20 @@ void main_run(){
 						 HOUI_Correction(0);
 						 motor_move(125,270,500);
 						 }
-					 while(line_get_data_poorly_made()>300){//対岸まで移動
-						 HOUI_Correction(0);
-						 motor_move(125,270,500);
-					 }
-			  		  servo(90,100,90,90);
+					 	 mofu=1;
+						snens_data= line_get_data_poorly_made();
+						while (mofu) {
+							snens_data= line_get_data_poorly_made();
+							if (snens_data>400) {mofu = 1; }
+							else {
+								if (snens_data <= 290 && snens_data >= 270) { mofu = 1; }
+								else {mofu = 0; break;}
+								if (snens_data < 180) { mofu = 0; break; }
+							}
+							HOUI_Correction(0);
+							 motor_move(125,270,500);
+						}
+					 servo(90,100,95,90);
 				 motor1(1000,1000);
 				 motor2(1000,1000);
 				 motor3(1000,1000);
@@ -582,13 +602,13 @@ void main_run(){
 					 }
 					 if(digree_now<180){
 						 if(digree_now==90){calc=90;}
-						 calc=digree_now*(sqrt(digree_now*2))/16;
+						 calc=digree_now*(sqrt(digree_now*2.3))/16;
 						 HOUI_Correction(180);
 						 motor_move(125,(uint16_t)calc,700);
 					 }
 					 else{
 						 if(digree_now==270){calc=270;}
-						 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+						 calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 						 HOUI_Correction(180);
 						 motor_move(125,(uint16_t)(360.0-calc),700);
 					 }
@@ -598,12 +618,12 @@ void main_run(){
 				 while((TIM3->CNT)>29800){//少し前出る
 					 digree_now=line_get_data_poorly_made();
 					 if(digree_now<180){
-						 calc=digree_now*(sqrt(digree_now*2))/16;
+						 calc=digree_now*(sqrt(digree_now*2.3))/16;
 						 HOUI_Correction(180);
 						 motor_move(125,(uint16_t)calc,800);
 					 }
 					 else{
-						 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+						 calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 						 HOUI_Correction(180);
 						 motor_move(125,(uint16_t)(360.0-calc),800);
 					 }
@@ -613,37 +633,37 @@ void main_run(){
 
 		  if(marker_count_data==5){//右水平標的
 			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
-	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+	  			   ics_set_pos1(0,map_a((109-3),0,180,4833,10166));
 		  			  DFPlayer_playmp3(5);
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 		  if(marker_count_data==6){//左水平標的
 			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
-	  			   ics_set_pos1(0,map_a(60,0,180,4833,10166));
+	  			   ics_set_pos1(0,map_a(66-3,0,180,4833,10166));
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 		  if(marker_count_data==7){//右水平標的
 			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
-	  			   ics_set_pos1(0,map_a(120,0,180,4833,10166));
+	  			   ics_set_pos1(0,map_a(110-3,0,180,4833,10166));
 		  			  DFPlayer_playmp3(4);
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 
 		  if(marker_count_data==8){//左水平標的
 			  if((TIM3->CNT)>29600 && (TIM3->CNT)<30000){
-	  			   ics_set_pos1(0,map_a(60,0,180,4833,10166));
+	  			   ics_set_pos1(0,map_a(70-3,0,180,4833,10166));
 			  }
 			  else{
-				  ics_set_pos1(0,map_a(90,0,180,4833,10166));
+				  ics_set_pos1(0,map_a(90-3,0,180,4833,10166));
 			  }
 		  }
 
@@ -652,12 +672,12 @@ void main_run(){
 			  while((TIM3->CNT)>29900){//少し前に出る
 				  digree_now=line_get_data_poorly_made();
 				  if(digree_now<180){
-					 calc=digree_now*(sqrt(digree_now*2))/16;
+					 calc=digree_now*(sqrt(digree_now*2.3))/16;
 					 HOUI_Correction(180);
 					 motor_move(125,(uint16_t)calc,800);
 				 }
 				 else{
-					 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 					 HOUI_Correction(180);
 					 motor_move(125,(uint16_t)(360.0-calc),800);
 				 }
@@ -678,7 +698,7 @@ void main_run(){
 
 			  		  servo(90,30,30,90);
 			  		  HAL_Delay(100);
-			  		  servo(90,100,90,90);
+			  		servo(90,100,95,90);
 					  xprintf(" Rx[0]=%d", Rxbuf[0]);
 					  xprintf(" Rx[1]=%d", Rxbuf[1]);
 					  xprintf(" Rx[2]=%d", Rxbuf[2]);
@@ -761,11 +781,20 @@ void main_run(){
 				 }
 				 ics_set_pos1(1,map_a(90,0,180,4833,10166));
 
+			 	 mofu=1;
 				 while(TIM4->CNT>29050){//端まで移動
 						 HOUI_Correction(180);
 						 motor_move(125,270,500);
 						 }
-					 while( line_get_data_poorly_made()>300){//対岸まで移動
+					snens_data= line_get_data_poorly_made();
+					while (mofu) {
+						snens_data= line_get_data_poorly_made();
+						if (snens_data>400) {mofu = 1; }
+						else {
+							if (snens_data <= 285 && snens_data >= 270) { mofu = 1; }
+							else {mofu = 0; break;}
+							if (snens_data < 180) { mofu = 0; break; }
+						}
 						 HOUI_Correction(180);
 						 motor_move(125,270,500);
 					 }
@@ -774,7 +803,7 @@ void main_run(){
 					 motor3(1000,1000);
 					 HAL_Delay(100);
 				 HOUI_Correction(0);
-		  		  servo(90,100,90,90);
+				 servo(90,100,95,90);
 				 while(marker_count_data==9){//マーカーまで移動
 					 digree_now=line_get_data_poorly_made();
 					 		if(line_get_marker()==10){
@@ -785,13 +814,13 @@ void main_run(){
 					  			 TIM3->CNT=30000;
 					 		}
 					 		if(digree_now<180){
-					 			calc=digree_now*(sqrt(digree_now*2))/16;
+					 			calc=digree_now*(sqrt(digree_now*2.3))/16;
 					 			if(digree_now==90){calc=90;}
 					 			HOUI_Correction(0);
 					 			motor_move(125,(uint16_t)calc,700);
 					 		}
 					 		else{
-					 			calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					 			calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 					 			if(digree_now==270){calc=270;}
 					 			HOUI_Correction(0);
 					 			motor_move(125,(uint16_t)(360.0-calc),700);
@@ -801,12 +830,12 @@ void main_run(){
 				 while((TIM3->CNT)>29800){//少し前出る
 					 digree_now=line_get_data_poorly_made();
 					 if(digree_now<180){
-						 calc=digree_now*(sqrt(digree_now*2))/16;
+						 calc=digree_now*(sqrt(digree_now*2.3))/16;
 						 HOUI_Correction(0);
 						 motor_move(125,(uint16_t)calc,800);
 					 }
 					 else{
-						 calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+						 calc=(360-digree_now)*(sqrt((360-digree_now)*2.3))/16;
 						 HOUI_Correction(0);
 						 motor_move(125,(uint16_t)(360.0-calc),800);
 					 }
@@ -816,7 +845,7 @@ void main_run(){
 
 			  if(marker_count_data<3 ||marker_count_data==10){//0°方向直進移動
 			  	  if(digree_now<180){
-				  calc=digree_now*(sqrt(digree_now*2))/16;
+				  calc=digree_now*(sqrt(digree_now*2.3))/16;
 				  if(digree_now==90){calc=90;}
 				  HOUI_Correction(0);
 				  motor_move(125,(uint16_t)calc,800);
@@ -830,13 +859,14 @@ void main_run(){
 			  }
 			  else{
 				  if(digree_now<180){//180°方向直進移動
-				  calc=digree_now*(sqrt(digree_now*2))/16;
+
+				  calc=round(digree_now*(log(digree_now*2.3))/16);
 				  if(digree_now==90){calc=90;}
 				  HOUI_Correction(180);
 				  motor_move(125,(uint16_t)calc,800);
 			  	  }
 			  	  else{
-					  calc=(360-digree_now)*(sqrt((360-digree_now)*2))/16;
+					  calc=round((360-digree_now)*(log((360-digree_now)*2.3))/16);
 					  if(digree_now==270){calc=270;}
 					  HOUI_Correction(180);
 					  motor_move(125,(uint16_t)(360.0-calc),800);
@@ -863,7 +893,7 @@ void test2(){/*
 	float calc=0;
 	uint16_t digree_now;
 	digree_now=line_get_data_poorly_made();
-		  servo(90,100,90,90);
+	servo(90,100,95,90);
 	  while((TIM3->CNT)>29900){//少し前出る
 		  digree_now=line_get_data_poorly_made();
 		  if(digree_now<180){
@@ -977,11 +1007,24 @@ void test2(){/*
 				 HOUI_Correction(0);
 				 motor_move(125,270,500);
 				 }
-			 while(line_get_data_poorly_made()>300){//対岸まで移動
-				 HOUI_Correction(0);
-				 motor_move(125,270,500);
-			 }
-	  		  servo(90,100,90,90);
+			 //対岸まで移動
+
+				int snens_data;
+				int mofu=1;
+				snens_data= line_get_data_poorly_made();
+				while (mofu) {
+					snens_data= line_get_data_poorly_made();
+					if (snens_data>400) {mofu = 1; }
+					else {
+						if (snens_data <= 300 && snens_data >= 270) { mofu = 1; }
+						else {mofu = 0; break;}
+						if (snens_data < 180) { mofu = 0; break; }
+					}
+					HOUI_Correction(0);
+					 motor_move(125,270,500);
+				}
+
+		 servo(90,100,95,90);
 		 motor1(1000,1000);
 		 motor2(1000,1000);
 		 motor3(1000,1000);
@@ -1017,7 +1060,7 @@ void test2(){/*
 void test(){
 
 	ics_set_pos1(1,map_a(130,0,180,4833,10166));
-	ics_set_pos1(0,map_a(120,0,180,4833,10166));
+	ics_set_pos1(0,map_a(128-3,0,180,4833,10166));
 	  HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_10);
 	  Txbuf[0]=0xFA;
 	  HAL_UART_Transmit(&huart2,(uint8_t *)Txbuf,1,0xFF);
